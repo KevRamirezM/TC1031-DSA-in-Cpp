@@ -1,14 +1,18 @@
 #include <iostream>
-#include <string>
 
-bool palindrome(char str[], int i, int f){
+bool palindrome(const char str[], int i, int f){
     if (i>=f){
         return true;
     }
-    else if{
-        
+    else if(str[i] == str[f]){
+        return palindrome(str, i+1, f-1);
     }
     else{
-        if (char[i] || char[f])
+        return false;
     }
+}
+
+int main(){
+    bool res = palindrome("racecar", 0, 6);
+    std::cout << "Palindrome " << res << " (1=True, 0=False)" << std::endl;
 }
