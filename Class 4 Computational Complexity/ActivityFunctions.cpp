@@ -2,14 +2,16 @@
 #include <iostream>
 using namespace std;
 
+// First function is given by O(n) time complexity
 int iterativeSum(int n){
     int sum = 0;
     for(int i = 1; i <= n; i++){
         sum += i;
     }
     return sum;
-};
+}
 
+// This next function is given by O(n) time complexity
 int recursiveSum(int n){
     if(n == 0){
         return 0;
@@ -17,6 +19,7 @@ int recursiveSum(int n){
     return n + recursiveSum(n - 1);
 }
 
+// The last function is given by O(1) time complexity
 int directSum(int n){
     return (n * (n + 1)) / 2;
 }
@@ -34,7 +37,7 @@ int main(){
             int result;
             cout << "Insert a number ";
             cin >> number;
-            if (number>0){
+            if (number>=0){
                 result = iterativeSum(number);
                 cout << "Result " << result;
             }
@@ -48,7 +51,7 @@ int main(){
             int result;
             cout << "Insert a number ";
             cin >> number;
-            if (number>0){
+            if (number>=0){
                 result = recursiveSum(number);
                 cout << "Result " << result;
             }
@@ -62,7 +65,7 @@ int main(){
             int result;
             cout << "Insert a number ";
             cin >> number;
-            if (number>0){
+            if (number>=0){
                 result = directSum(number);
                 cout << "Result " << result << endl;
             }
@@ -76,4 +79,4 @@ int main(){
             break;
         }
     }
-};
+}
