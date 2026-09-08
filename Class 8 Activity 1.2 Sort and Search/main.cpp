@@ -1,47 +1,30 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
-// BubbleSort
+// Bubble Sort
+// Time Complexity: O(n^2)
 template <typename T>
-int bubbleSort(vector<T>& arr) {
+void bubbleSort(vector<T>& arr) {
     int n = arr.size();
-    int comparisons = 0;
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
-            comparisons++;
             if (arr[j] > arr[j + 1]) {
                 swap(arr[j], arr[j + 1]);
             }
         }
     }
-    return comparisons;
 }
 
-int main() {
-    vector<int> arr = {5, 3, 1, 12, 9};
-
-    int comparisons = bubbleSort(arr);
-
-    cout << "Vector: ";
-    for (int x : arr) {
-        cout << x << " ";
-    }
-
-    cout << "\nComparisons: " << comparisons << endl;
-
-    return 0;
-}
-
-// SelectionSort
+// Selection Sort
+// Time Complexity: O(n^2)
 template <typename T>
-int selectionSort(vector<T>& arr) {
+void selectionSort(vector<T>& arr) {
     int n = arr.size();
-    int comparisons = 0;
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
         for (int j = i + 1; j < n; j++) {
-            comparisons++;
             if (arr[j] < arr[minIndex]) {
                 minIndex = j;
             }
@@ -50,51 +33,87 @@ int selectionSort(vector<T>& arr) {
             swap(arr[i], arr[minIndex]);
         }
     }
-    return comparisons;
 }
 
-// InsertionSort
-
+// Insertion Sort
+// Time Complexity: O(n^2)
 template <typename T>
-void insertionSort(T a[], T n){
-    for (T i = 1; i < n; i++){
-        T key = a[i];
-        T j = i-1;
-        while (j >= 0 && a[j] > key){
-            a[j+1] = a[j];
+void insertionSort(vector<T>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        T key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        a[j+1] = key;
+        arr[j + 1] = key;
     }
 }
 
-// SequentialSearch
+// Sequential Search
+// Time Complexity: O(n)
 template <typename T>
-int sequentialSearch(vector<T> & arr, int target){
-    for (T i = 0; i < arr.size(); i++){
-        if (arr[i] == target){
+int sequentialSearch(const vector<T>& arr, const T& target) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
             return i;
         }
     }
     return -1;
 }
 
-// binarySearch
+// Binary Search
+// Time Complexity: O(log n)
 template <typename T>
-int binarySearch(vector<T> a, int target){
+int binarySearch(const vector<T>& arr, const T& target) {
     int lo = 0;
-    int hi = (a.size() - 1);
-    while(int lo <= int hi){
-        int mid = ((lo + hi) / 2);
-        if (a[mid] == target){
+    int hi = arr.size() - 1;
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] == target) {
             return mid;
         }
-        if (a[mid] > target){
-            lo = mid + 1;
-        }
-        else{
+        if (arr[mid] > target) {
             hi = mid - 1;
+        }
+        else {
+            lo = mid + 1;
         }
     }
     return -1;
+}
+
+int main() {
+    vector<int> numbers = {29, 10, 14, 37, 10, 5, 22, 18};
+    vector<int> bubble = numbers;
+    vector<int> selection = numbers;
+    vector<int> insertion = numbers;
+
+    bubbleSort(bubble);
+    selectionSort(selection);
+    insertionSort(insertion);
+
+    cout << "Bubble Sort: ";
+    for (int x : bubble) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    cout << "Selection Sort: ";
+    for (int x : selection) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    cout << "Insertion Sort: ";
+    for (int x : insertion) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    int target = 22;
+    cout << "Sequential Search: " << sequentialSearch(bubble, target) << endl;
+    cout << "Binary Search: " << binarySearch(bubble, target) << endl;
+    return 0;
 }
