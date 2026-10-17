@@ -96,8 +96,20 @@ private:
 
 	// Returns the number of edges from the root to the node that holds x, or -1 if x is not in the tree.
 	int depth(Node *n, int x) const {
-		// TODO
-		return 0;
+		if (n == nullptr) return -1;
+		if (n->info == x) return 0;
+
+		int result;
+		if (x < n->info){
+			result = depth(n->left, x);
+		}
+		else{
+			result = depth(n->right, x);
+		}
+
+		if(result == -1) return -1;
+
+		return result + 1;
 	}
 
 	// Prints the values level by level, from left to right. Use a queue<Node *>.
