@@ -34,16 +34,32 @@ public:
 	// last node of its search path (lastOnPath gives it). Returns whether x is in the tree.
 	// An empty tree returns false.
 	bool contains(int x) {
-		// TODO
-		return false;
+		if (root == nullptr) return false;
+		Node *n = lastOnPath(x);
+		splay(n);
+		return n->info == x;
 	}
 
 	// Inserts x as in a BST, as a new leaf, and splays the new node. Returns true.
 	// lastOnPath(x) gives the node that holds x, or the node where x must hang. A repeated value adds
 	// no node: it splays the node that already holds x and returns false. Set the parent of the new node.
 	bool insert(int x) {
-		// TODO
-		return false;
+		if (root == nullptr) {
+			root = new Node{x, nullptr, nullptr, nullptr};
+			return true;
+		}
+
+		Node *parent = lastOnPath(x);
+		if (parent->info == x) {
+			splay(parent);
+			return false;
+		}
+
+		Node *n = new Node{x, nullptr, nullptr, parent};
+		if (x < parent->info) parent->left = n;
+		else parent->right = n;
+		splay(n);
+		return true;
 	}
 
 	// Removes x. First contains(x): if x is not there, returns false (the tree was still splayed).
@@ -52,8 +68,25 @@ public:
 	// finds it, because x is greater than every key of TL), and hang TR as the right child of the new
 	// root. Keep every parent link correct. Returns true.
 	bool remove(int x) {
-		// TODO
-		return false;
+		if (!contains(x)) return false;
+
+		Node *removed = root;
+		Node *left = root->left;
+		Node *right = root->right;
+		if (left != nullptr) left->parent = nullptr;
+		if (right != nullptr) right->parent = nullptr;
+		delete removed;
+
+		if (left == nullptr) {
+			root = right;
+			return true;
+		}
+
+		root = left;
+		splay(lastOnPath(x));
+		root->right = right;
+		if (right != nullptr) right->parent = root;
+		return true;
 	}
 
 	// The public methods that print also end the line.
@@ -85,12 +118,22 @@ private:
 	// of b becomes the left subtree of a. Keep every parent link correct; replaceInParent puts b where
 	// a was (it also updates root when a was the root).
 	void rotateRight(Node *a) {
-		// TODO
+		Node *b = a->left;
+		replaceInParent(a, b);
+		a->left = b->right;
+		if (a->left != nullptr) a->left->parent = a;
+		b->right = a;
+		a->parent = b;
 	}
 
 	// The mirror image: the right child of a rises and a goes down to its left.
 	void rotateLeft(Node *a) {
-		// TODO
+		Node *b = a->right;
+		replaceInParent(a, b);
+		a->right = b->left;
+		if (a->right != nullptr) a->right->parent = a;
+		b->left = a;
+		a->parent = b;
 	}
 
 	// Moves x to the root. While x has a parent P, look at its grandparent G and apply the case:
@@ -98,7 +141,26 @@ private:
 	//   P is the left child of G:      zig-zig (right at G, then right at P) or zig-zag (left at P, then right at G)
 	//   P is the right child of G:     zag-zag (left at G, then left at P) or zag-zig (right at P, then left at G)
 	void splay(Node *x) {
-		// TODO
+		while (x->parent != nullptr) {
+			Node *p = x->parent;
+			Node *g = p->parent;
+			if (g == nullptr) {
+				if (x == p->left) rotateRight(p);
+				else rotateLeft(p);
+			} else if (x == p->left && p == g->left) {
+				rotateRight(g);
+				rotateRight(p);
+			} else if (x == p->right && p == g->right) {
+				rotateLeft(g);
+				rotateLeft(p);
+			} else if (x == p->right) {
+				rotateLeft(p);
+				rotateRight(g);
+			} else {
+				rotateRight(p);
+				rotateLeft(g);
+			}
+		}
 	}
 
 	// Returns the node with x, or the last node of the search path of x. root is not null. Already written.
