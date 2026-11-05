@@ -4,24 +4,30 @@
 using namespace std;
 
 class MatrixGraph {
-    // Add the data members you need.
+    int n;
+    vector<vector<bool>> adj;
 public:
     explicit MatrixGraph(int n) {
-        // your code here
+        this->n = n;
+        this->adj.assign(n+1, vector(n+1, false));
     }
 
     void addEdge(int u, int v) {
-        // your code here
+        adj[u][v] = true;
     }
 
     bool hasEdge(int u, int v) const {
-        // your code here
-        return false;
+        return adj[u][v];
     }
 
     vector<int> neighbors(int u) const {
-        // your code here
-        return {};
+        vector<int> out;
+        for (int v = 1; v <= n; v++) {
+            if (adj[u][v]) {
+                out.push_back(v);
+            }
+        }
+        return out;
     }
 };
 
