@@ -9,7 +9,7 @@ class MatrixGraph {
 public:
     explicit MatrixGraph(int n) {
         this->n = n;
-        this->adj.assign(n+1, vector(n+1, false));
+        this->adj.assign(n+1, vector<bool>(n+1, false));
     }
 
     void addEdge(int u, int v) {

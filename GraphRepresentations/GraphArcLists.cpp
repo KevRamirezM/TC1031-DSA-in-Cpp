@@ -4,29 +4,59 @@
 using namespace std;
 
 class ArcListGraph {
-    // Define Vertex/Arc and store them.
+    struct Arc {
+        int from;
+        int to;
+    };
+
+    int n;
+    vector<Arc> arcs;
+
 public:
     explicit ArcListGraph(int n) {
-        // your code here
+        this->n = n;
     }
 
     void addEdge(int u, int v) {
-        // your code here
+        if (u < 1 || u > n || v < 1 || v > n || hasEdge(u, v)) {
+            return;
+        }
+        arcs.insert(arcs.begin(), {u, v});
     }
 
-    bool hasEdge(int u, int v) const {
-        // your code here
+    bool hasEdge(int u, int v) {
+        for (Arc& arc : arcs) {
+            if (arc.from == u && arc.to == v) {
+                return true;
+            }
+        }
         return false;
     }
 
-    vector<int> outNeighbors(int u) const {
-        // your code here
-        return {};
+    vector<int> outNeighbors(int u) {
+        vector<int> result;
+        if (u < 1 || u > n) {
+            return result;
+        }
+        for (Arc& arc : arcs) {
+            if (arc.from == u) {
+                result.push_back(arc.to);
+            }
+        }
+        return result;
     }
 
-    vector<int> inNeighbors(int v) const {
-        // your code here
-        return {};
+    vector<int> inNeighbors(int v) {
+        vector<int> result;
+        if (v < 1 || v > n) {
+            return result;
+        }
+        for (Arc& arc : arcs) {
+            if (arc.to == v) {
+                result.push_back(arc.from);
+            }
+        }
+        return result;
     }
 };
 

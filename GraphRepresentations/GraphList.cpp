@@ -5,25 +5,38 @@ using namespace std;
 
 // Implement a directed graph with vertices 1..n.
 class ListGraph {
-    // Add the data members you need here.
+    vector<vector<int>> adjList;
 public:
     explicit ListGraph(int n) {
-        // your code here
+        adjList.resize(n + 1);
     }
 
     // Adds the directed arc u -> v.
     void addEdge(int u, int v) {
-        // your code here
+        vector<int>& neighbors = adjList[u];
+        for (int neighbor : neighbors) {
+            if (neighbor == v) {
+                return; // Edge already exists
+            }
+        }
+        neighbors.push_back(v);
     }
 
-    bool hasEdge(int u, int v) const {
-        // your code here
+    bool hasEdge(int u, int v) {
+        vector<int>& neighbors = adjList[u];
+        for (int neighbor : neighbors) {
+            if (neighbor == v) {
+                return true;
+            }
+        }
         return false;
     }
 
-    const vector<int>& neighbors(int u) const {
-        // your code here
-        static const vector<int> empty;
+    vector<int>& neighbors(int u) {
+        if (u >= 0 && u < adjList.size()) {
+            return adjList[u];
+        }
+        static vector<int> empty;
         return empty;
     }
 };
@@ -51,7 +64,7 @@ int main() {
         } else { // NEIGHBORS
             int u;
             cin >> u;
-            const vector<int>& out = g.neighbors(u);
+            vector<int>& out = g.neighbors(u);
             if (out.empty()) {
                 cout << "(empty)\n";
             } else {

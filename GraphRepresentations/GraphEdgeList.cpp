@@ -5,24 +5,40 @@
 using namespace std;
 
 class EdgeListGraph {
-    // Add the data members you need.
+    int n;
+    vector<pair<int, int>> edges;
 public:
     explicit EdgeListGraph(int n) {
-        // your code here
+        this->n = n;
     }
 
     void addEdge(int u, int v) {
-        // your code here
+        if (u < 1 || u > n || v < 1 || v > n || hasEdge(u, v)) {
+            return;
+        }
+        edges.emplace_back(u, v);
     }
 
-    bool hasEdge(int u, int v) const {
-        // your code here
+    bool hasEdge(int u, int v) {
+        for (pair<int, int>& edge : edges) {
+            if (edge.first == u && edge.second == v) {
+                return true;
+            }
+        }
         return false;
     }
 
-    vector<int> neighbors(int u) const {
-        // your code here
-        return {};
+    vector<int> neighbors(int u) {
+        vector<int> result;
+        if (u < 1 || u > n) {
+            return result;
+        }
+        for (pair<int, int>& edge : edges) {
+            if (edge.first == u) {
+                result.push_back(edge.second);
+            }
+        }
+        return result;
     }
 };
 
